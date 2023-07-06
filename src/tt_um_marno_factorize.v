@@ -13,12 +13,12 @@ module tt_um_marno_factorize #( parameter MAX_COUNT = 10_000_000 ) (
 
     wire reset = !rst_n;
     wire [6:0] led_out;
-    assign uo_out[6:0] = led_out; // Only least significant 7 bits are used
+    assign uo_out[6:0] = led_out; // Only least significant 7 bits are used for segment display
 
     // Use bidirectionals as outputs
-    assign uio_oe = 8'b11111111;
+    assign uio_oe = 8'hFF;
 
-    // Put bottom 8 bits of second counter out on the bidirectional gpio
+    // Put bottom 8 bits of second counter out on the bidirectional GPIO
     assign uio_out = second_counter[7:0];
 
     // External clock is 10MHz, so need 24 bit counter
