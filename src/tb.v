@@ -28,7 +28,7 @@ module tb ();
     wire ena;
 
     // instantiate the DUT with lower MAX_COUNT for a faster sim
-    tt_um_seven_segment_seconds #(.MAX_COUNT(1000)) tt_um_seven_segment_seconds (
+    tt_um_marno_factorize #(.MAX_COUNT(1000)) tt_um_marno_factorize (
         `ifdef GL_TEST
             .vccd1( 1'b1),
             .vssd1( 1'b0),
