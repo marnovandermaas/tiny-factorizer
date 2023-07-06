@@ -52,6 +52,6 @@ module tt_um_seven_segment_seconds #( parameter MAX_COUNT = 10_000_000 ) (
     end
 
     // Instantiate segment display
-    seg7 seg7(.counter(digit), .segments(led_out));
+    seg7decoder seg7decoder(.counter(digit), .segments(led_out));
 
 endmodule

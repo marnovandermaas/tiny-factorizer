@@ -12,7 +12,7 @@
 *      -- 4 --
 */
 
-module seg7 (
+module seg7decoder (
     input wire [3:0] counter,
     output reg [6:0] segments
 );
