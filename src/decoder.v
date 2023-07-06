@@ -1,14 +1,15 @@
-
 /*
-      -- 1 --
-     |       |
-     6       2
-     |       |
-      -- 7 --
-     |       |
-     5       3
-     |       |
-      -- 4 --
+* Module for driving a seven segment display.
+* Key:
+*      -- 1 --
+*     |       |
+*     6       2
+*     |       |
+*      -- 7 --
+*     |       |
+*     5       3
+*     |       |
+*      -- 4 --
 */
 
 module seg7 (
@@ -18,6 +19,7 @@ module seg7 (
 
     always @(*) begin
         case(counter)
+            // See key above:
             //                7654321
             0:  segments = 7'b0111111;
             1:  segments = 7'b0000110;
@@ -29,8 +31,9 @@ module seg7 (
             7:  segments = 7'b0000111;
             8:  segments = 7'b1111111;
             9:  segments = 7'b1100111;
-            default:    
+            default: begin
                 segments = 7'b0000000;
+            end
         endcase
     end
 
