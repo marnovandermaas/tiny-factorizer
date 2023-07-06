@@ -3,8 +3,12 @@
 # Testing your design
 To run the tests please run the following commands:
 ```
-cd src
-make
+make -C src
+```
+
+If you want to see the waveform from your simulation:
+```
+gtkwave src/tb.gtkw
 ```
 
 # Generating the GDS
