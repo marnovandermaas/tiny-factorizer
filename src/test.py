@@ -21,10 +21,15 @@ async def test_7seg(dut):
     # Wait one cycle for the registers to latch
     await ClockCycles(dut.clk, 1)
 
+    # Enable second counter
+    dut.ui_in.value = 0x80
+
     dut._log.info("check all segments")
     for i in range(10):
         dut._log.info("check segment {}".format(i))
         assert int(dut.segments.value) == segments[i]
+
+        # Wait for 1 second
         await ClockCycles(dut.clk, 1000)
 
         # All bidirectionals are set to output
@@ -32,3 +37,10 @@ async def test_7seg(dut):
 
         # Bottom bits of counter are zero
         assert dut.lsb_counter == 0x00
+
+
+    dut.ui_in.value = 0x00
+    await ClockCycles(dut.clk, 1)
+    assert dut.lsb_counter == 0x00
+    await ClockCycles(dut.clk, 1)
+    assert dut.lsb_counter == 0x00

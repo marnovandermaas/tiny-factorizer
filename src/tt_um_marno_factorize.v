@@ -10,21 +10,26 @@ module tt_um_marno_factorize #( parameter MAX_COUNT = 10_000_000 ) (
     input  wire       clk,      // Clock
     input  wire       rst_n     // reset_n - Low to reset
 );
+    // External clock is 10MHz, so need 24 bit counter
+    reg [23:0] second_counter;
+    reg [3:0] digit;
+    reg [7:0] factors;
 
+    // Create reset for convenience
     wire reset = !rst_n;
+
+    // Seven segment LEDs
     wire [6:0] led_out;
+    assign uo_out[7] = 1'b0;
     assign uo_out[6:0] = led_out; // Only least significant 7 bits are used for segment display
 
     // Use bidirectionals as outputs
     assign uio_oe = 8'hFF;
 
     // Put bottom 8 bits of second counter out on the bidirectional GPIO
-    assign uio_out = second_counter[7:0];
+    assign uio_out = ui_in[7] ? second_counter[7:0] : factors;
 
-    // External clock is 10MHz, so need 24 bit counter
-    reg [23:0] second_counter;
-    reg [3:0] digit;
-
+    // Second counter logic
     always @(posedge clk) begin
         // If reset, set counter and digit to 0
         if (reset) begin
@@ -48,6 +53,16 @@ module tt_um_marno_factorize #( parameter MAX_COUNT = 10_000_000 ) (
                 // Increment counter
                 second_counter <= second_counter + 1'b1;
             end
+        end
+    end
+
+    // Factor logic
+    always @(posedge clk) begin
+        // If reset, set factors to 0
+        if (reset) begin
+            factors <= 0;
+        end else begin
+            factors <= 0;
         end
     end
 
