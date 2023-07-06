@@ -28,6 +28,7 @@ async def test_7seg(dut):
         await ClockCycles(dut.clk, 1000)
 
         # All bidirectionals are set to output
-        assert dut.uio_oe == 0xFF
+        assert dut.output_enable == 0xFF
+
         # Bottom bits of counter are zero
-        assert dut.uio_out == 0x00
+        assert dut.lsb_counter == 0x00
