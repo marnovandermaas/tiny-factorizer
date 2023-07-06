@@ -18,11 +18,16 @@ async def test_7seg(dut):
     await ClockCycles(dut.clk, 10)
     dut.rst_n.value = 1
 
+    # Wait one cycle for the registers to latch
+    await ClockCycles(dut.clk, 1)
+
     dut._log.info("check all segments")
     for i in range(10):
         dut._log.info("check segment {}".format(i))
-        await ClockCycles(dut.clk, 1000)
         assert int(dut.segments.value) == segments[i]
+        await ClockCycles(dut.clk, 1000)
 
         # All bidirectionals are set to output
         assert dut.uio_oe == 0xFF
+        # Bottom bits of counter are zero
+        assert dut.uio_out == 0x00
