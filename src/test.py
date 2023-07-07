@@ -18,7 +18,7 @@ async def test_7seg(dut):
     await ClockCycles(dut.clk, 10)
     dut.rst_n.value = 1
 
-    # Enable second counter
+    # Set output as second counter
     dut.ui_in.value = 0x80
 
     # Wait one cycle for the registers to latch
@@ -40,6 +40,19 @@ async def test_7seg(dut):
 
         # Wait for 1 second
         await ClockCycles(dut.clk, 1000 - 0xFF)
+
+@cocotb.test()
+async def test_factor(dut):
+    # Start the clock
+    dut._log.info("start")
+    clock = Clock(dut.clk, 10, units="us")
+    cocotb.start_soon(clock.start())
+
+    # Reset the design
+    dut._log.info("reset")
+    dut.rst_n.value = 0
+    await ClockCycles(dut.clk, 10)
+    dut.rst_n.value = 1
 
     dut._log.info("check factorize logic")
     dut.ui_in.value = 0x00
