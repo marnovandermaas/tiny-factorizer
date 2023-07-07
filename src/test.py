@@ -23,11 +23,17 @@ async def test_7seg(dut):
     # Set output as second counter
     dut.ui_in.value = 0x80
 
-    # Wait one cycle for the registers to latch
+    # Wait one cycle for registers to latch after reset
+    await ClockCycles(dut.clk, 1)
+
+    # Check that display is reset to 0
+    assert int(dut.segments.value) == segments[0]
+
+    # Wait one cycle because change of input resets counter
     await ClockCycles(dut.clk, 1)
 
     dut._log.info("check all segments")
-    for i in range(10):
+    for i in range(1, 10):
         dut._log.info("check segment {}".format(i))
 
         # All bidirectionals are set to output
@@ -56,11 +62,8 @@ async def test_factor(dut):
     await ClockCycles(dut.clk, 10)
     dut.rst_n.value = 1
 
-    # Wait 1 second for 0 to disapear
+    # Wait for zero to turn into one
     await ClockCycles(dut.clk, cycles_per_second)
-
-    # Offset by 10 cycles to allow for register reads
-    await ClockCycles(dut.clk, 10)
 
     dut._log.info("check factorize logic")
     # Run through all possible inputs
@@ -74,8 +77,20 @@ async def test_factor(dut):
             dut._log.info("  now at input value 0x{:02X}".format(i))
         dut.ui_in.value = i
 
-        # Wait for one second
-        await ClockCycles(dut.clk, cycles_per_second)
+        # Wait for some cycles to propagate the input
+        await ClockCycles(dut.clk, 10)
 
         # Check expected factors
         assert dut.uio_out == expected_factors
+
+        # Wait for one second minus the previous offset
+        await ClockCycles(dut.clk, cycles_per_second - 10)
+
+        # All values are divisible by 1
+        assert int(dut.segments.value) == segments[1]
+
+        for j in range(2,10):
+            if (i % j) == 0:
+                # Wait for one second
+                await ClockCycles(dut.clk, cycles_per_second)
+                assert int(dut.segments.value) == segments[j]
