@@ -21,7 +21,7 @@ module factorizer (
   input wire clk,
   input wire reset,
   input wire [7:0] number,
-  output reg [13:0] factors
+  output reg [17:0] factors
 );
   reg [3:0] mod_three;
   reg [4:0] mod_five;
@@ -29,6 +29,8 @@ module factorizer (
   reg [4:0] mod_nine;
   reg [5:0] mod_eleven;
   reg [5:0] mod_thirteen;
+  reg [6:0] mod_seventeen;
+  reg [6:0] mod_nineteen;
 
   always @(posedge clk) begin
     if (reset) begin
@@ -100,6 +102,23 @@ module factorizer (
       factors[12] <= factors[5] && factors[0];
       // Divisible by 15
       factors[13] <= factors[3] && factors[1];
+      // Divisible by 16
+      factors[14] <= !number[0] && !number[1] && !number[2] && !number[3];
+      // Divisible by 17
+      mod_seventeen <= number[0] + 2*number[1] + 4*number[2] + 8*number[3] + 16*number[4] + 15*number[5] + 13*number[6] + 9*number[7];
+      factors[15] <= mod_seventeen ==  0 ||
+                     mod_seventeen == 17 ||
+                     mod_seventeen == 34 ||
+                     mod_seventeen == 51 ||
+                     mod_seventeen == 68;
+      // Divisible by 18
+      factors[16] <= factors[7] && factors[0];
+      // Divisible by 19
+      mod_nineteen <= number[0] + 2*number[1] + 4*number[2] + 8*number[3] + 16*number[4] + 13*number[5] + 7*number[6] + 14*number[7];
+      factors[17] <= mod_nineteen ==  0 ||
+                     mod_nineteen == 19 ||
+                     mod_nineteen == 38 ||
+                     mod_nineteen == 57;
     end
   end
 

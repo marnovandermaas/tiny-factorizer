@@ -14,7 +14,7 @@ module tt_um_marno_factorize #( parameter MAX_COUNT = 10_000_000 ) (
     reg [23:0] second_counter;
     reg [3:0] digit;
     reg [3:0] new_digit;
-    wire [13:0] factors;
+    wire [17:0] factors;
 
     reg [7:0] old_input;
 
@@ -30,7 +30,9 @@ module tt_um_marno_factorize #( parameter MAX_COUNT = 10_000_000 ) (
     assign uio_oe = 8'hFF;
 
     // Put bottom 8 bits of second counter out on the bidirectional GPIO
-    assign uio_out = |ui_in ? factors : second_counter[7:0];
+    assign uio_out = |ui_in ?
+                        {/*19*/ factors[17], /*17*/ factors[15], /*13*/ factors[11], /*11*/ factors[9], /*7*/ factors[5], /*5*/ factors[3], /*3*/ factors[1], /*2*/ factors[0]}
+                        : second_counter[7:0];
 
     // Drive segment display
     always @(posedge clk) begin

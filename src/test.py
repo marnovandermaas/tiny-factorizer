@@ -74,15 +74,17 @@ async def test_factor(dut):
     # Wait for zero to turn into one
     await ClockCycles(dut.clk, cycles_per_second)
 
+    list_of_primes = [2, 3, 5, 7, 11, 13, 17, 19]
+
     max_input_value = 0xFF
     dut._log.info("check factorize logic")
     # Run through all possible inputs
     for i in range(1, max_input_value):
-        expected_factors = 0x0000
+        expected_factors = 0x00
         # Calculate what the actual factors are
-        for j in range(2, base_of_factors):
+        for idx, j in enumerate(list_of_primes):
             if (i % j) == 0:
-                expected_factors |= 1 << (j-2)
+                expected_factors |= 1 << (idx)
         if (i % 16) == 15:
             dut._log.info("  {:d} percent done".format(int(i*100/max_input_value)))
         dut.ui_in.value = i
@@ -91,7 +93,7 @@ async def test_factor(dut):
         await ClockCycles(dut.clk, 10)
 
         # Check expected factors
-        assert dut.uio_out == expected_factors & 0xFF
+        assert dut.uio_out == expected_factors
 
         # Wait for one second minus the previous offset
         await ClockCycles(dut.clk, cycles_per_second - 10)
