@@ -18,11 +18,11 @@ async def test_7seg(dut):
     await ClockCycles(dut.clk, 10)
     dut.rst_n.value = 1
 
-    # Wait one cycle for the registers to latch
-    await ClockCycles(dut.clk, 1)
-
     # Enable second counter
     dut.ui_in.value = 0x80
+
+    # Wait one cycle for the registers to latch
+    await ClockCycles(dut.clk, 1)
 
     dut._log.info("check all segments")
     for i in range(10):
@@ -40,9 +40,9 @@ async def test_7seg(dut):
         # Wait for 1 second
         await ClockCycles(dut.clk, 1000 - 0xFF)
 
-
-    dut.ui_in.value = 0x00
+    dut._log.info("check factorize logic")
+    dut.ui_in.value = 0x0F
     await ClockCycles(dut.clk, 1)
-    assert dut.lsb_counter == 0x00
+    assert dut.lsb_counter == 0x0F
     await ClockCycles(dut.clk, 1)
-    assert dut.lsb_counter == 0x00
+    assert dut.lsb_counter == 0x0F

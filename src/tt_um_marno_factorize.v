@@ -13,7 +13,7 @@ module tt_um_marno_factorize #( parameter MAX_COUNT = 10_000_000 ) (
     // External clock is 10MHz, so need 24 bit counter
     reg [23:0] second_counter;
     reg [3:0] digit;
-    reg [7:0] factors;
+    wire [7:0] factors;
 
     // Create reset for convenience
     wire reset = !rst_n;
@@ -56,17 +56,10 @@ module tt_um_marno_factorize #( parameter MAX_COUNT = 10_000_000 ) (
         end
     end
 
-    // Factor logic
-    always @(posedge clk) begin
-        // If reset, set factors to 0
-        if (reset) begin
-            factors <= 0;
-        end else begin
-            factors <= 0;
-        end
-    end
-
     // Instantiate segment display
     seg7decoder seg7decoder(.counter(digit), .segments(led_out));
+
+    // Instantiate factoring unit
+    factorizer factorizer(.number(ui_in[6:0]), .factors(factors));
 
 endmodule
