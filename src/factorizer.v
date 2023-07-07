@@ -46,6 +46,7 @@ module factorizer (
       factors[1] <= mod_three ==  0 ||
                     mod_three ==  3 ||
                     mod_three ==  6 ||
+                    mod_three ==  9 ||
                     mod_three == 12;
       // Divisible by 4
       factors[2] <= !number[0] && !number[1];

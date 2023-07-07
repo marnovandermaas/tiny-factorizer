@@ -55,12 +55,15 @@ async def test_factor(dut):
     dut.rst_n.value = 1
 
     dut._log.info("check factorize logic")
-    dut.ui_in.value = 0x00
-    await ClockCycles(dut.clk, 10)
-    assert dut.uio_out == 0xFF
-    dut.ui_in.value = 0x01
-    await ClockCycles(dut.clk, 10)
-    assert dut.uio_out == 0x00
-    dut.ui_in.value = 0x0C
-    await ClockCycles(dut.clk, 10)
-    assert dut.uio_out == 0x17
+    # Run through all possible inputs
+    for i in range(0x7F):
+        expected_factors = 0x00
+        # Calculate what the actual factors are
+        for j in range(2,10):
+            if (i % j) == 0:
+                expected_factors |= 1 << (j-2)
+        if (i % 16) == 0:
+            dut._log.info("  now at input value 0x{:02X}".format(i))
+        dut.ui_in.value = i
+        await ClockCycles(dut.clk, 10)
+        assert dut.uio_out == expected_factors
