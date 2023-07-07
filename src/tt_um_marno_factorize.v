@@ -13,6 +13,7 @@ module tt_um_marno_factorize #( parameter MAX_COUNT = 10_000_000 ) (
     // External clock is 10MHz, so need 24 bit counter
     reg [23:0] second_counter;
     reg [3:0] digit;
+    reg [3:0] new_digit;
     wire [7:0] factors;
 
     // Create reset for convenience
@@ -29,12 +30,13 @@ module tt_um_marno_factorize #( parameter MAX_COUNT = 10_000_000 ) (
     // Put bottom 8 bits of second counter out on the bidirectional GPIO
     assign uio_out = ui_in[7] ? second_counter[7:0] : factors;
 
-    // Second counter logic
+    // Drive segment display
     always @(posedge clk) begin
         // If reset, set counter and digit to 0
         if (reset) begin
             second_counter <= 0;
             digit <= 0;
+            new_digit <= 0;
         end else begin
             // If counted up to second
             if (second_counter == MAX_COUNT - 1) begin
@@ -42,16 +44,26 @@ module tt_um_marno_factorize #( parameter MAX_COUNT = 10_000_000 ) (
                 second_counter <= 0;
 
                 // Increment digit
-                digit <= digit + 1'b1;
+                new_digit <= new_digit + 1'b1;
 
-                // Only count from 0 to 9
-                if (digit == 9) begin
-                    digit <= 0;
+                // Only count from 1 to 9
+                if (new_digit == 9) begin
+                    new_digit <= 1;
                 end
-
             end else begin
                 // Increment counter
                 second_counter <= second_counter + 1'b1;
+                if (new_digit != 0) begin
+                    if (new_digit == 1) begin
+                        digit <= 1;
+                    end else begin
+                        if (factors[new_digit - 2]) begin
+                            digit <= new_digit;
+                        end else begin
+                            new_digit <= new_digit + 1'b1;
+                        end
+                    end
+                end
             end
         end
     end
