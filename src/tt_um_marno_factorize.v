@@ -60,6 +60,6 @@ module tt_um_marno_factorize #( parameter MAX_COUNT = 10_000_000 ) (
     seg7decoder seg7decoder(.counter(digit), .segments(led_out));
 
     // Instantiate factoring unit
-    factorizer factorizer(.number(ui_in[6:0]), .factors(factors));
+    factorizer factorizer(.clk(clk), .reset(reset), .number(ui_in[6:0]), .factors(factors));
 
 endmodule
