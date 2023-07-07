@@ -3,9 +3,14 @@ from cocotb.clock import Clock
 from cocotb.triggers import RisingEdge, FallingEdge, Timer, ClockCycles
 
 # Expected 7 segment outputs
-segments = [ 63, 6, 91, 79, 102, 109, 124, 7, 127, 103 ]
+segments = [ 63, 6, 91, 79, 102, 109, 125, 7, 127, 103 , 119, 124, 57, 94, 121, 113 ]
 
 cycles_per_second = 1000
+
+@cocotb.test()
+async def test_segment_values(dut):
+    # Check that all values in the segments list are unique
+    assert len(segments) == len(set(segments))
 
 @cocotb.test()
 async def test_7seg_cycling(dut):
