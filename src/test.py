@@ -8,7 +8,7 @@ segments = [ 63, 6, 91, 79, 102, 109, 124, 7, 127, 103 ]
 cycles_per_second = 1000
 
 @cocotb.test()
-async def test_7seg(dut):
+async def test_7seg_cycling(dut):
     # Start the clock
     dut._log.info("start")
     clock = Clock(dut.clk, 10, units="us")
@@ -27,27 +27,29 @@ async def test_7seg(dut):
     await ClockCycles(dut.clk, 1)
 
     # Check that display is reset to 0
+    dut._log.info("check segment 0")
     assert int(dut.segments.value) == segments[0]
 
     # Wait one cycle because change of input resets counter
     await ClockCycles(dut.clk, 1)
 
-    dut._log.info("check all segments")
-    for i in range(1, 10):
-        dut._log.info("check segment {}".format(i))
+    for k in range(3):
+        dut._log.info("check all segments for {}th time".format(k))
+        for i in range(1, 10):
+            dut._log.info("  check segment {}".format(i))
 
-        # All bidirectionals are set to output
-        assert dut.output_enable == 0xFF
+            # All bidirectionals are set to output
+            assert dut.output_enable == 0xFF
 
-        for j in range(0xFF):
-            # Check bottom bits of counter
-            assert dut.uio_out == j
-            await ClockCycles(dut.clk, 1)
+            for j in range(0xFF):
+                # Check bottom bits of counter
+                assert dut.uio_out == j
+                await ClockCycles(dut.clk, 1)
 
-        assert int(dut.segments.value) == segments[i]
+            assert int(dut.segments.value) == segments[i]
 
-        # Wait for 1 second
-        await ClockCycles(dut.clk, cycles_per_second - 0xFF)
+            # Wait for 1 second
+            await ClockCycles(dut.clk, cycles_per_second - 0xFF)
 
 @cocotb.test()
 async def test_factor(dut):
