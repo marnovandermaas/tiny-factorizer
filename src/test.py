@@ -34,7 +34,7 @@ async def test_7seg(dut):
 
         for j in range(0xFF):
             # Check bottom bits of counter
-            assert dut.lsb_counter == j
+            assert dut.uio_out == j
             await ClockCycles(dut.clk, 1)
 
         # Wait for 1 second
@@ -43,6 +43,6 @@ async def test_7seg(dut):
     dut._log.info("check factorize logic")
     dut.ui_in.value = 0x0F
     await ClockCycles(dut.clk, 1)
-    assert dut.lsb_counter == 0x0F
+    assert dut.uio_out == 0x0F
     await ClockCycles(dut.clk, 1)
-    assert dut.lsb_counter == 0x0F
+    assert dut.uio_out == 0x0F

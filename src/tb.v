@@ -20,7 +20,7 @@ module tb ();
     wire [6:0] segments = uo_out[6:0];
     wire [7:0] uo_out;
     wire [7:0] ui_in;
-    wire [7:0] lsb_counter;
+    wire [7:0] uio_out;
     wire [7:0] uio_in;
     wire [7:0] output_enable;
     wire clk;
@@ -36,7 +36,7 @@ module tb ();
         .ui_in      (ui_in),         // Dedicated inputs
         .uo_out     (uo_out),        // Dedicated outputs
         .uio_in     (uio_in),        // IOs: Input path
-        .uio_out    (lsb_counter),   // IOs: Output path
+        .uio_out    (uio_out),       // IOs: Output path
         .uio_oe     (output_enable), // IOs: Enable path (active high: 0=input, 1=output)
         .ena        (ena),           // enable - Goes high when design is selected
         .clk        (clk),           // clock
