@@ -67,16 +67,17 @@ async def test_factor(dut):
     # Wait for zero to turn into one
     await ClockCycles(dut.clk, cycles_per_second)
 
+    max_input_value = 0x7F
     dut._log.info("check factorize logic")
     # Run through all possible inputs
-    for i in range(0x7F):
+    for i in range(max_input_value):
         expected_factors = 0x00
         # Calculate what the actual factors are
         for j in range(2,10):
             if (i % j) == 0:
                 expected_factors |= 1 << (j-2)
-        if (i % 16) == 0:
-            dut._log.info("  now at input value 0x{:02X}".format(i))
+        if (i % 16) == 15:
+            dut._log.info("  {:d} percent done".format(int(i*100/max_input_value)))
         dut.ui_in.value = i
 
         # Wait for some cycles to propagate the input
