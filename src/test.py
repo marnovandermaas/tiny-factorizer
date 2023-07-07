@@ -21,17 +21,17 @@ async def test_7seg_cycling(dut):
     dut.rst_n.value = 1
 
     # Set output as second counter
-    dut.ui_in.value = 0x80
+    dut.ui_in.value = 0x00
 
     # Wait one cycle for registers to latch after reset
     await ClockCycles(dut.clk, 1)
 
-    # Check that display is reset to 0
+    # Check that display is reset to zero
     dut._log.info("check segment 0")
     assert int(dut.segments.value) == segments[0]
 
-    # Wait one cycle because change of input resets counter
-    await ClockCycles(dut.clk, 1)
+    # Wait for zero to turn into one
+    await ClockCycles(dut.clk, cycles_per_second)
 
     for k in range(3):
         dut._log.info("check all segments for {}th time".format(k))
@@ -67,10 +67,10 @@ async def test_factor(dut):
     # Wait for zero to turn into one
     await ClockCycles(dut.clk, cycles_per_second)
 
-    max_input_value = 0x7F
+    max_input_value = 0xFF
     dut._log.info("check factorize logic")
     # Run through all possible inputs
-    for i in range(max_input_value):
+    for i in range(1, max_input_value):
         expected_factors = 0x00
         # Calculate what the actual factors are
         for j in range(2,10):

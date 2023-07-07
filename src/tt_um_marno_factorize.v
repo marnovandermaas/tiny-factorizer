@@ -30,7 +30,7 @@ module tt_um_marno_factorize #( parameter MAX_COUNT = 10_000_000 ) (
     assign uio_oe = 8'hFF;
 
     // Put bottom 8 bits of second counter out on the bidirectional GPIO
-    assign uio_out = ui_in[7] ? second_counter[7:0] : factors;
+    assign uio_out = |ui_in ? factors : second_counter[7:0];
 
     // Drive segment display
     always @(posedge clk) begin
@@ -85,6 +85,6 @@ module tt_um_marno_factorize #( parameter MAX_COUNT = 10_000_000 ) (
     seg7decoder seg7decoder(.counter(digit), .segments(led_out));
 
     // Instantiate factoring unit
-    factorizer factorizer(.clk(clk), .reset(reset), .number(ui_in[6:0]), .factors(factors));
+    factorizer factorizer(.clk(clk), .reset(reset), .number(ui_in), .factors(factors));
 
 endmodule
