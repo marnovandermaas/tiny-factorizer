@@ -41,8 +41,12 @@ async def test_7seg(dut):
         await ClockCycles(dut.clk, 1000 - 0xFF)
 
     dut._log.info("check factorize logic")
-    dut.ui_in.value = 0x0F
+    dut.ui_in.value = 0x00
     await ClockCycles(dut.clk, 1)
-    assert dut.uio_out == 0x0F
+    assert dut.uio_out == 0xFF
+    dut.ui_in.value = 0x01
     await ClockCycles(dut.clk, 1)
-    assert dut.uio_out == 0x0F
+    assert dut.uio_out == 0x00
+    dut.ui_in.value = 0x0C
+    await ClockCycles(dut.clk, 1)
+    assert dut.uio_out == 0x17
