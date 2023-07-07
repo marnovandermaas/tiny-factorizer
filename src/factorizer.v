@@ -17,19 +17,19 @@ module factorizer (
     // Divisible by 2
     factors[0] = !number[0];
     // Divisible by 3
-    factors[1] = ((number % 3) == 0);
+    factors[1] = 0;//((number % 3) == 0);
     // Divisible by 4
     factors[2] = !number[0] && !number[1];
     // Divisible by 5
-    factors[3] = ((number % 5) == 0);
+    factors[3] = 0;//((number % 5) == 0);
     // Divisible by 6
     factors[4] = factors[0] && factors[1];
     // Divisible by 7
-    factors[5] = ((number % 7) == 0);
+    factors[5] = 0;//((number % 7) == 0);
     // Divisible by 8
     factors[6] = !number[0] && !number[1] && !number[2];
     // Divisible by 9
-    factors[7] = ((number % 9) == 0);
+    factors[7] = 0;//((number % 9) == 0);
   end
 
 endmodule
