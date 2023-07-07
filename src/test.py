@@ -7,6 +7,8 @@ segments = [ 63, 6, 91, 79, 102, 109, 125, 7, 127, 103 , 119, 124, 57, 94, 121, 
 
 cycles_per_second = 1000
 
+base_of_factors = 16
+
 @cocotb.test()
 async def test_segment_values(dut):
     # Check that all values in the segments list are unique
@@ -32,7 +34,7 @@ async def test_7seg_cycling(dut):
     await ClockCycles(dut.clk, 1)
 
     # Check that display is reset to zero
-    dut._log.info("check segment 0")
+    dut._log.info("check segment 0x0")
     assert int(dut.segments.value) == segments[0]
 
     # Wait for zero to turn into one
@@ -40,8 +42,8 @@ async def test_7seg_cycling(dut):
 
     for k in range(3):
         dut._log.info("check all segments for {}th time".format(k))
-        for i in range(1, 10):
-            dut._log.info("  check segment {}".format(i))
+        for i in range(1, base_of_factors):
+            dut._log.info("  check segment 0x{:X}".format(i))
 
             # All bidirectionals are set to output
             assert dut.output_enable == 0xFF
@@ -76,9 +78,9 @@ async def test_factor(dut):
     dut._log.info("check factorize logic")
     # Run through all possible inputs
     for i in range(1, max_input_value):
-        expected_factors = 0x00
+        expected_factors = 0x0000
         # Calculate what the actual factors are
-        for j in range(2,10):
+        for j in range(2, base_of_factors):
             if (i % j) == 0:
                 expected_factors |= 1 << (j-2)
         if (i % 16) == 15:
@@ -89,7 +91,7 @@ async def test_factor(dut):
         await ClockCycles(dut.clk, 10)
 
         # Check expected factors
-        assert dut.uio_out == expected_factors
+        assert dut.uio_out == expected_factors & 0xFF
 
         # Wait for one second minus the previous offset
         await ClockCycles(dut.clk, cycles_per_second - 10)
@@ -97,7 +99,7 @@ async def test_factor(dut):
         # All values are divisible by 1
         assert int(dut.segments.value) == segments[1]
 
-        for j in range(2,10):
+        for j in range(2, base_of_factors):
             if (i % j) == 0:
                 # Wait for one second
                 await ClockCycles(dut.clk, cycles_per_second)

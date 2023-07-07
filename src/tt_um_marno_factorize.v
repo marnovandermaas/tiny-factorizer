@@ -14,7 +14,7 @@ module tt_um_marno_factorize #( parameter MAX_COUNT = 10_000_000 ) (
     reg [23:0] second_counter;
     reg [3:0] digit;
     reg [3:0] new_digit;
-    wire [7:0] factors;
+    wire [13:0] factors;
 
     reg [7:0] old_input;
 
@@ -54,9 +54,9 @@ module tt_um_marno_factorize #( parameter MAX_COUNT = 10_000_000 ) (
                     // Increment digit
                     new_digit <= new_digit + 1'b1;
 
-                    // Only count from 1 to 9
-                    if (new_digit == 9) begin
-                        new_digit <= 1;
+                    // Only count from 0x1 to 0xF
+                    if (new_digit == 4'hF) begin
+                        new_digit <= 4'h1;
                     end
                 end else begin
                     // Increment counter
@@ -68,9 +68,12 @@ module tt_um_marno_factorize #( parameter MAX_COUNT = 10_000_000 ) (
                             if (factors[new_digit - 2]) begin
                                 digit <= new_digit;
                             end else begin
+                                // Cycle through digits if this is not a factor of the input
                                 new_digit <= new_digit + 1'b1;
-                                if (new_digit == 9) begin
-                                    new_digit <= 1;
+
+                                // Only count from 0x1 to 0xF
+                                if (new_digit == 4'hF) begin
+                                    new_digit <= 4'h1;
                                 end
                             end
                         end
