@@ -38,7 +38,10 @@ documentation:
 
 # Instructions on how someone could test your project, include things like what buttons do what and how to set the clock if needed
   how_to_test:  |
-      After reset, the counter should increase by one every second with a 10MHz input clock.
+      After reset and input set to 0, the counter should increase by one every second with a 10MHz input clock from 0x1 to 0xF.
+
+      For inputs other than 0, the seven segment display will show the factors one by one, cycling back at the end.
+      It will also use the output pins to indicate the prime factors.
 
 # A description of what the inputs do (e.g. red button, SPI CLK, SPI MOSI, etc).
   inputs:               
