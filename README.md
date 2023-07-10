@@ -17,7 +17,7 @@ When you edit the info.yaml to choose a different ID, the [GitHub Action](.githu
 
 After that, the action uses the open source ASIC tool called [OpenLane](https://www.zerotoasiccourse.com/terminology/openlane/) to build the files needed to fabricate an ASIC.
 
-You can see the result of the GDS action [here](https://marnovandermaas.github.io/tt04/).
+You can see the result of the GDS action [here](https://marnovandermaas.github.io/tiny-factorizer/).
 
 # What is Tiny Tapeout?
 
