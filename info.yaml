@@ -43,8 +43,8 @@ documentation:
       For inputs other than 0, the seven segment display will show the factors one by one, cycling back at the end.
       It will also use the output pins to indicate the prime factors.
 
-      Hexadecimals are displayed using the decimal configurations (without modifications) https://en.wikipedia.org/wiki/Seven-segment_display#Decimal
-      And then the hexidecimal values specified specified here https://en.wikipedia.org/wiki/Seven-segment_display#Hexadecimal
+      Hexadecimals are displayed using the [decimal configurations (without modifications)](https://en.wikipedia.org/wiki/Seven-segment_display#Decimal).
+      And then the hexidecimal values specified [here](https://en.wikipedia.org/wiki/Seven-segment_display#Hexadecimal).
 
 # A description of what the inputs do (e.g. red button, SPI CLK, SPI MOSI, etc).
   inputs:               
