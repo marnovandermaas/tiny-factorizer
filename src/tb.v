@@ -28,13 +28,11 @@ module tb ();
     wire ena;
 
     // Instantiate the DUT with lower MAX_COUNT for a faster sim
-`ifdef GL_TEST
-    tt_um_marno_factorize tt_um_marno_factorize (
-        .VPWR( 1'b1),
-        .VGND( 1'b0),
-`else
     tt_um_marno_factorize #(.MAX_COUNT(1000)) tt_um_seven_segment_seconds (
-`endif
+        `ifdef GL_TEST
+            .VPWR( 1'b1),
+            .VGND( 1'b0),
+        `endif
         .ui_in      (ui_in),         // Dedicated inputs
         .uo_out     (uo_out),        // Dedicated outputs
         .uio_in     (uio_in),        // IOs: Input path
