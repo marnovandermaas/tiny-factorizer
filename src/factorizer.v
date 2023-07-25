@@ -34,11 +34,15 @@ module factorizer (
 
   always @(posedge clk) begin
     if (reset) begin
-      mod_three <= 0;
-      mod_five  <= 0;
-      mod_seven <= 0;
-      mod_nine  <= 0;
-      factors   <= 0;
+      mod_three     <= 0;
+      mod_five      <= 0;
+      mod_seven     <= 0;
+      mod_nine      <= 0;
+      mod_eleven    <= 0;
+      mod_thirteen  <= 0;
+      mod_seventeen <= 0;
+      mod_nineteen  <= 0;
+      factors       <= 0;
     end else begin
       // Divisible by 2
       factors[0] <= !number[0];
