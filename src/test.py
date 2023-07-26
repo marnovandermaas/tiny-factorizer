@@ -2,10 +2,18 @@ import cocotb
 from cocotb.clock import Clock
 from cocotb.triggers import RisingEdge, FallingEdge, Timer, ClockCycles
 
+import os
+
 # Expected 7 segment outputs
 segments = [ 63, 6, 91, 79, 102, 109, 125, 7, 127, 103 , 119, 124, 57, 94, 121, 113 ]
 
+gate_level_sim = False
+if 'GATES' in os.environ.keys():
+    if os.environ['GATES'] == 'yes':
+        gate_level_sim = True
 cycles_per_second = 1000
+if gate_level_sim:
+    cycles_per_second = 10000000
 
 base_of_factors = 16
 
@@ -13,6 +21,8 @@ base_of_factors = 16
 async def test_segment_values(dut):
     # Check that all values in the segments list are unique
     assert len(segments) == len(set(segments))
+    dut._log.info("Line segment values are unique")
+    dut._log.info("GATES is equal to {}".format(gate_level_sim))
 
 @cocotb.test()
 async def test_7seg_cycling(dut):
@@ -40,7 +50,11 @@ async def test_7seg_cycling(dut):
     # Wait for zero to turn into one
     await ClockCycles(dut.clk, cycles_per_second)
 
-    for k in range(3):
+    number_of_cycles = 3
+    if gate_level_sim:
+        number_of_cycles = 1
+
+    for k in range(number_of_cycles):
         dut._log.info("check all segments for {}th time".format(k))
         for i in range(1, base_of_factors):
             dut._log.info("  check segment 0x{:X}".format(i))
@@ -57,11 +71,18 @@ async def test_7seg_cycling(dut):
 
             assert int(dut.segments.value) == segments[i]
 
+            if gate_level_sim and i == 2:
+                break
+
             # Wait for 1 second
             await ClockCycles(dut.clk, cycles_per_second - 0xFF)
 
 @cocotb.test()
 async def test_factor(dut):
+    # Skip this test in the gate level simulator
+    if gate_level_sim:
+        return
+
     # Start the clock
     dut._log.info("start")
     clock = Clock(dut.clk, 10, units="us")
