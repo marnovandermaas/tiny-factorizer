@@ -50,6 +50,8 @@ async def test_7seg_cycling(dut):
 
             for j in range(0xFF):
                 # Check bottom bits of counter
+                if (dut.uio_out != j):
+                    dut._log.info("  assertion about to fail for bottom bits of counter output 0x{:X} vs expected 0x{:X}".format(int(dut.uio_out), j))
                 assert dut.uio_out == j
                 await ClockCycles(dut.clk, 1)
 
@@ -105,4 +107,6 @@ async def test_factor(dut):
             if (i % j) == 0:
                 # Wait for one second
                 await ClockCycles(dut.clk, cycles_per_second)
+                if (int(dut.segments.value) != segments[j]):
+                    dut._log.info("  assertion about to fail for segment values 0x{:X} vs expected 0x{:X}".format(int(dut.segments.value), segments[j]))
                 assert int(dut.segments.value) == segments[j]
