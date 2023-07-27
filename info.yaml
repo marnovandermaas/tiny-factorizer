@@ -30,21 +30,25 @@ documentation:
 # Longer description of how the project works. You can use standard markdown format.
   how_it_works: |
       Uses a set of registers to compute the modulo of all factors up to 19 in one or two steps.
-      Shows factors 1-16 on the seven segment display.
+      Shows factors 1-15 on the seven segment display.
       Shows only prime factors on the output pins.
       For the seven segment display, this design divides the clock, and then uses some combinational logic to convert from binary to hexadecimal for the display.
 
-      Puts the bottom 8 bits of the counter on the bidirectional outputs if the input is 0.
+      Puts the bottom 8 bits of the counter on the bidirectional outputs if the input is 0 for debugging purposes.
 
 # Instructions on how someone could test your project, include things like what buttons do what and how to set the clock if needed
   how_to_test:  |
-      After reset and input set to 0, the counter should increase by one every second with a 10MHz input clock from 0x1 to 0xF.
+      After reset and input set to 0, the counter on the seven segment display should increase by one every second with a 10MHz input clock from 0x1 to 0xF.
+      The outputs are the lower bits of the internal counter that increases every second.
 
       For inputs other than 0, the seven segment display will show the factors one by one, cycling back at the end.
       It will also use the output pins to indicate the prime factors.
 
       Hexadecimals are displayed using the [decimal configurations (without modifications)](https://en.wikipedia.org/wiki/Seven-segment_display#Decimal).
       And then the hexidecimal values specified [here](https://en.wikipedia.org/wiki/Seven-segment_display#Hexadecimal).
+
+      Please reset the design before giving your input.
+      Also, you can have a look at the [testbench](https://github.com/marnovandermaas/tiny-factorizer/blob/main/src/test.py) for more thorough testing.
 
 # A description of what the inputs do (e.g. red button, SPI CLK, SPI MOSI, etc).
   inputs:               
