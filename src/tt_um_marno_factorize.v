@@ -23,7 +23,7 @@ module tt_um_marno_factorize #( parameter MAX_COUNT = 24'd10_000_000 ) (
 
     // Seven segment LEDs
     wire [6:0] led_out;
-    assign uo_out[7] = 1'b0;
+    assign uo_out[7] = !(|ui_in); // If input is 0 set the dot.
     assign uo_out[6:0] = led_out; // Only least significant 7 bits are used for segment display
 
     // Use bidirectionals as outputs

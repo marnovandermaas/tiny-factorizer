@@ -47,6 +47,9 @@ async def test_7seg_cycling(dut):
     dut._log.info("check segment 0x0")
     assert int(dut.segments.value) == segments[0]
 
+    # Check that input is zero
+    assert dut.is_zero == 1
+
     # Wait for zero to turn into one
     await ClockCycles(dut.clk, cycles_per_second)
 
@@ -70,6 +73,7 @@ async def test_7seg_cycling(dut):
                 await ClockCycles(dut.clk, 1)
 
             assert int(dut.segments.value) == segments[i]
+            assert dut.is_zero == 1
 
             if gate_level_sim and i == 2:
                 break
@@ -115,6 +119,9 @@ async def test_factor(dut):
         # Wait for some cycles to propagate the input
         await ClockCycles(dut.clk, 10)
 
+        # Check that input is non-zero
+        assert dut.is_zero == 0
+
         # Check expected factors
         assert dut.uio_out == expected_factors
 
@@ -131,3 +138,4 @@ async def test_factor(dut):
                 if (int(dut.segments.value) != segments[j]):
                     dut._log.info("  assertion about to fail for segment values 0x{:X} vs expected 0x{:X}".format(int(dut.segments.value), segments[j]))
                 assert int(dut.segments.value) == segments[j]
+                assert dut.is_zero == 0
