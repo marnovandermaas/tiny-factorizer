@@ -25,3 +25,12 @@ When you edit the info.yaml to choose a different ID, the [GitHub Action](.githu
 After that, the action uses the open source ASIC tool called [OpenLane](https://www.zerotoasiccourse.com/terminology/openlane/) to build the files needed to fabricate an ASIC.
 
 You can see the result of the GDS action [here](https://marnovandermaas.github.io/tiny-factorizer/).
+
+## Building documentation locally
+
+To build the documentaiton locally you need to clone the [TinyTapeout support tools](https://github.com/TinyTapeout/tt-support-tools).
+Then run the following commands:
+```
+pip3 install -r tt-support-tools/requirements.txt
+tt-support-tools/tt_tool.py --create-pdf
+```
