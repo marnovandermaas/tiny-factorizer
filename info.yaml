@@ -23,14 +23,14 @@ yaml_version: 4
 # Here is a great example: https://github.com/davidsiaw/tt02-davidsiaw-stackcalc/blob/38c5647f83aad2aec675d566aa3d67b98f0aac81/info.yaml
 documentation: 
   author:       "Marno van der Maas"
-  title:        "Factorizer"
+  title:        "Number Factorizer"
   language:     "Verilog"
   description:  "Takes the input and computes its factors"
 
 # Longer description of how the project works. You can use standard markdown format.
   how_it_works: |
-      Uses a set of registers to compute the modulo of all factors up to 19 in one or two steps.
-      Shows factors 1-15 on the seven segment display.
+      This design uses a set of registers to compute the modulo of all factors up to 19 in one or two steps.
+      Shows factors 1-15 on the seven segment display with a one second delay.
       Shows only prime factors on the output pins.
       For the seven segment display, this design divides the clock, and then uses some combinational logic to convert from binary to hexadecimal for the display.
 
@@ -39,11 +39,18 @@ documentation:
 # Instructions on how someone could test your project, include things like what buttons do what and how to set the clock if needed
   how_to_test:  |
       After reset and input set to 0, the counter on the seven segment display should increase by one every second with a 10MHz input clock from 0x1 to 0xF.
-      The outputs are the lower bits of the internal counter that increases every second.
+      The outputs are the lower bits of the internal counter that increases every cycle.
       The dot on the seven segment display should be on.
 
       For inputs other than 0, the seven segment display will show the factors one by one, cycling back at the end.
-      It will also use the output pins to indicate the prime factors.
+      The factor 1 is displayed for all inputs and only factors up to 15 are shown.
+      For example for 6, the factors 1, 2, 3 and 6 will be shown on the display.
+      For 7, the factors 1 and 7 will be shown on the display.
+      For 23, only the factor 1 will be show on the display.
+      It will also use the output pins to indicate the prime factors, where the least significatn bit represents 2 and the most significant bit show 19.
+      For example for 6, 2 and 3 are set to 1.
+      For 7, only 7 is set to 1.
+      For 23, all the outputs are zero.
       The dot on the seven segment display for non-zero inputs should be off.
 
       Hexadecimals are displayed using the [decimal configurations (without modifications)](https://en.wikipedia.org/wiki/Seven-segment_display#Decimal).
@@ -89,6 +96,6 @@ documentation:
   tag:          "timer, test"      # comma separated list of tags: test, encryption, experiment, clock, animation, utility, industrial, pwm, fpga, alu, microprocessor, risc, riscv, sensor, signal generator, fft, filter, music, bcd, sound, serial, timer, random number generator, calculator, decoder, counter, puzzle, multiplier, game, oscillator
   external_hw:  ""      # Describe any external hardware needed
   discord:      ""      # Your discord handle, used for communication and automatically assigning tapeout role after a submission
-  doc_link:     ""      # URL to longer form documentation, eg the README.md in your repository
+  doc_link:     ""      # URL to longer form documentation, e.g. the README.md in your repository
   clock_hz:     10000000       # Clock frequency in Hz (if required)
   picture:      ""      # relative path to a picture in your repository
