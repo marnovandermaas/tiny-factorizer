@@ -49,7 +49,7 @@ documentation:
               ...              ||
               big_sum == k * m
       ```
-      Where `m` is the largest integer for which `k * m < (k - 1) * 8`.
+      Where `m` is the largest integer for which `k * m <= (k - 1) * 8`.
 
       Factors between 1-15 are shown in a loop on the seven segment display with a one second delay between each factor.
       For the seven segment display, this design uses some combinational logic to convert from binary to hexadecimal for the display.
