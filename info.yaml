@@ -40,23 +40,25 @@ documentation:
                 (2^7 % k) * n[7]
               ) % k
       ```
-      The values of `2^n % k` can be computed ahead of time.
-      And since the final result of the big sum is guaranteed to be less than or equal to `(k-1)*8`, we can hardcode the final mod as:
+      The values of `2^n % k` can be computed ahead of time and are hardcoded in the design.
+      Since the final result of the big sum is guaranteed to be less than or equal to `(k - 1) * 8`, we can exaustively list all the values for which the modulus is one by:
       ```
-      n % k = big_sum == k * 0 ||
-              big_sum == k * 1 ||
-              big_sum == k * 2 ||
-              ...              ||
-              big_sum == k * m
+      n % k = (
+                (big_sum == k * 0) ||
+                (big_sum == k * 1) ||
+                (big_sum == k * 2) ||
+                ...                ||
+                (big_sum == k * m)
+              )
       ```
       Where `m` is the largest integer for which `k * m <= (k - 1) * 8`.
 
-      Factors between 1-15 are shown in a loop on the seven segment display with a one second delay between each factor.
-      For the seven segment display, this design uses some combinational logic to convert from binary to hexadecimal for the display.
+      Factors between 0x1 (decimal 1) and 0xF (decimal 15) are shown in a loop on the seven segment display with a one second delay between each factor.
+      This design uses some combinational logic to convert from binary to hexadecimal for the seven segment display.
       The second delay is achieved by a clock divider logic.
       
-      The output pins shows the prime factors of the input number.
-      Puts the bottom 8 bits of the counter on the bidirectional outputs if the input is 0 for debugging purposes.
+      The output pins show the prime factors of the input number.
+      If the input is zero, the output is set to the bottom 8 bits of the counter for debugging purposes.
 
 # Instructions on how someone could test your project, include things like what buttons do what and how to set the clock if needed
   how_to_test:  |
@@ -115,8 +117,8 @@ documentation:
     - Is 19 a factor?
 
 # The following fields are optional
-  tag:          "timer, test" # Comma separated list of tags: test, encryption, experiment, clock, animation, utility, industrial, pwm, fpga, alu, microprocessor, risc, riscv, sensor, signal generator, fft, filter, music, bcd, sound, serial, timer, random number generator, calculator, decoder, counter, puzzle, multiplier, game, oscillator
-  external_hw:  "" # Describe any external hardware needed
+  tag:          "alu, calculator, hexadecimal, math, prime, timer" # Comma separated list of tags: test, encryption, experiment, clock, animation, utility, industrial, pwm, fpga, alu, microprocessor, risc, riscv, sensor, signal generator, fft, filter, music, bcd, sound, serial, timer, random number generator, calculator, decoder, counter, puzzle, multiplier, game, oscillator
+  external_hw:  "seven-segment display" # Describe any external hardware needed
   discord:      "" # Your discord handle, used for communication and automatically assigning tapeout role after a submission
   doc_link:     "" # URL to longer form documentation, e.g. the README.md in your repository
   clock_hz:     10000000 # Clock frequency in Hz (if required)
