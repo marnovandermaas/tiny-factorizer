@@ -104,7 +104,7 @@ async def test_factor(dut):
     list_of_primes = [2, 3, 5, 7, 11, 13, 17, 19]
 
     max_input_value = 0xFF
-    dut._log.info("check factorize logic")
+    dut._log.info("check factoring logic")
     # Run through all possible inputs
     for i in range(1, max_input_value):
         expected_factors = 0x00
