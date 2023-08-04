@@ -1,11 +1,11 @@
---- 
+---
 # TinyTapeout project information
 project:
   wokwi_id: 0 # Must be 0 if you are not using wokwi
 
-# If using an HDL, set wokwi_id as 0 and uncomment and list your source files here. 
+# If using an HDL, set wokwi_id as 0 and uncomment and list your source files here.
 # Source files must be in ./src and you must list each source file separately
-  source_files:        
+  source_files:
     - tt_um_marno_factorize.v
     - seg7decoder.v
     - factorizer.v
@@ -41,7 +41,7 @@ documentation:
               ) % k
       ```
       The values of `2^n % k` can be computed ahead of time and are hardcoded in the design.
-      Since the final result of the big sum is guaranteed to be less than or equal to `(k - 1) * 8`, we can exaustively list all the values for which the modulus is one by:
+      Since the final result of the big sum is guaranteed to be less than or equal to `(k - 1) * 8`, we can exhaustively list all the values for which the modulus is one by:
       ```
       n % k = (
                 (big_sum == k * 0) ||
@@ -54,9 +54,9 @@ documentation:
       Where `m` is the largest integer for which `k * m <= (k - 1) * 8`.
 
       Factors between 0x1 (decimal 1) and 0xF (decimal 15) are shown in a loop on the seven segment display with a one second delay between each factor.
-      This design uses some combinational logic to convert from binary to hexadecimal for the seven segment display.
+      This design uses some combinatorial logic to convert from binary to hexadecimal for the seven segment display.
       The second delay is achieved by a clock divider logic.
-      
+
       The output pins show the prime factors of the input number.
       If the input is zero, the output is set to the bottom 8 bits of the counter for debugging purposes.
 
@@ -64,27 +64,27 @@ documentation:
   how_to_test:  |
       After reset and input set to 0, the counter on the seven segment display should increase by one every second with a 10 MHz input clock from `0x1` to `0xF`.
       The outputs are the lower bits of the internal counter that increases every cycle.
-      The dot on the seven segment display should be on.
+      The dot on the seven segment display should be off.
 
       For inputs other than 0, the seven segment display shows the factors one by one, cycling back at the end.
       The factor 1 is displayed for all inputs and only factors up to 15 are shown.
       For example for 6, the factors 1, 2, 3 and 6 will be shown on the display.
       For 7, the factors 1 and 7 will be shown on the display.
       For 23, only the factor 1 will be show on the display.
-      It will also use the output pins to indicate the prime factors, where the least significatn bit represents 2 and the most significant bit represents 19.
+      It will also use the output pins to indicate the prime factors, where the least significant bit represents 2 and the most significant bit represents 19.
       For example for 6, 2 and 3 are set to 1.
       For 7, only 7 is set to 1.
       For 23, all the outputs are zero.
-      The dot on the seven segment display for non-zero inputs should be off.
+      The dot on the seven segment display is only on when the input number is prime.
 
       Hexadecimals are displayed using the [decimal configurations (without modifications)](https://en.wikipedia.org/wiki/Seven-segment_display#Decimal).
-      And then the hexidecimal values specified [here](https://en.wikipedia.org/wiki/Seven-segment_display#Hexadecimal).
+      And then the hexadecimal values specified [here](https://en.wikipedia.org/wiki/Seven-segment_display#Hexadecimal).
 
       Please reset the design before giving your input.
       Also, you can have a look at the [testbench](https://github.com/marnovandermaas/tiny-factorizer/blob/main/src/test.py) for more thorough testing.
 
 # A description of what the inputs do (e.g. red button, SPI CLK, SPI MOSI, etc).
-  inputs:               
+  inputs:
     - Number to factor bit 0
     - Number to factor bit 1
     - Number to factor bit 2

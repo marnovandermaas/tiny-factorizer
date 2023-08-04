@@ -55,7 +55,7 @@ async def test_7seg_cycling(dut):
     assert int(dut.segments.value) == segments[0]
 
     # Check that input is zero
-    assert dut.is_zero == 1
+    assert dut.is_prime == 0
 
     # If in gate level simulator do not wait for one second, this will take a long time
     if gate_level_sim:
@@ -82,7 +82,7 @@ async def test_7seg_cycling(dut):
                 await ClockCycles(dut.clk, 1)
 
             assert int(dut.segments.value) == segments[i]
-            assert dut.is_zero == 1
+            assert dut.is_prime == 0
 
             # Wait for 1 second
             await ClockCycles(dut.clk, cycles_per_second - 0xFF)
@@ -108,6 +108,7 @@ async def test_factor(dut):
     await ClockCycles(dut.clk, cycles_per_second)
 
     list_of_primes = [2, 3, 5, 7, 11, 13, 17, 19]
+    list_of_all_primes = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167, 173, 179, 181, 191, 193, 197, 199, 211, 223, 227, 229, 233, 239, 241, 251]
 
     max_input_value = 0xFF
     dut._log.info("check factorize logic")
@@ -125,8 +126,8 @@ async def test_factor(dut):
         # Wait for some cycles to propagate the input
         await ClockCycles(dut.clk, 10)
 
-        # Check that input is non-zero
-        assert dut.is_zero == 0
+        # Check that input is correctly identified as prime
+        assert dut.is_prime == (1 if i in list_of_all_primes else 0)
 
         # Check expected factors
         assert dut.uio_out == expected_factors
@@ -144,4 +145,3 @@ async def test_factor(dut):
                 if (int(dut.segments.value) != segments[j]):
                     dut._log.info("  assertion about to fail for segment values 0x{:X} vs expected 0x{:X}".format(int(dut.segments.value), segments[j]))
                 assert int(dut.segments.value) == segments[j]
-                assert dut.is_zero == 0

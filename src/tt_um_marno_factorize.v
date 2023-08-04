@@ -23,7 +23,8 @@ module tt_um_marno_factorize #( parameter MAX_COUNT = 24'd10_000_000 ) (
 
     // Seven segment LEDs
     wire [6:0] led_out;
-    assign uo_out[7] = !(|ui_in); // If input is 0 set the dot.
+    wire is_prime;
+    assign uo_out[7] = is_prime; // If input is prime set the dot.
     assign uo_out[6:0] = led_out; // Only least significant 7 bits are used for segment display
 
     // Use bidirectionals as outputs
@@ -90,6 +91,6 @@ module tt_um_marno_factorize #( parameter MAX_COUNT = 24'd10_000_000 ) (
     seg7decoder seg7decoder(.counter(digit), .segments(led_out));
 
     // Instantiate factoring unit
-    factorizer factorizer(.clk(clk), .reset(reset), .number(ui_in), .factors(factors));
+    factorizer factorizer(.clk(clk), .reset(reset), .number(ui_in), .factors(factors), .is_prime(is_prime));
 
 endmodule

@@ -21,7 +21,8 @@ module factorizer (
   input wire clk,
   input wire reset,
   input wire [7:0] number,
-  output reg [17:0] factors
+  output reg [17:0] factors,
+  output reg is_prime
 );
   reg [3:0] mod_three;
   reg [4:0] mod_five;
@@ -43,6 +44,7 @@ module factorizer (
       mod_seventeen <= 0;
       mod_nineteen  <= 0;
       factors       <= 0;
+      is_prime      <= 0;
     end else begin
       // Divisible by 2
       factors[0] <= !number[0];
@@ -123,6 +125,15 @@ module factorizer (
                      mod_nineteen == 19 ||
                      mod_nineteen == 38 ||
                      mod_nineteen == 57;
+      is_prime <= number != 1 && (number ==  2 ||
+                                  number ==  3 ||
+                                  number ==  5 ||
+                                  number ==  7 ||
+                                  number == 11 ||
+                                  number == 13 ||
+                                  number == 17 ||
+                                  number == 19 ||
+                                  !(|factors));
     end
   end
 

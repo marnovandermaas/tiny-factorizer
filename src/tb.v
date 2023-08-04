@@ -18,7 +18,7 @@ module tb ();
 
     // Wire up the inputs and outputs
     wire [6:0] segments = uo_out[6:0];
-    wire is_zero = uo_out[7];
+    wire is_prime = uo_out[7];
     wire [7:0] uo_out;
     wire [7:0] ui_in;
     wire [7:0] uio_out;
