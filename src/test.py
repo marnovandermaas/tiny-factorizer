@@ -43,6 +43,13 @@ async def test_7seg_cycling(dut):
     # Wait one cycle for registers to latch after reset
     await ClockCycles(dut.clk, 1)
 
+    for j in range(0xFF):
+        # Check bottom bits of counter
+        if (dut.uio_out != j):
+            dut._log.info("  assertion about to fail for bottom bits of counter output 0x{:X} vs expected 0x{:X}".format(int(dut.uio_out), j))
+        assert dut.uio_out == j
+        await ClockCycles(dut.clk, 1)
+
     # Check that display is reset to zero
     dut._log.info("check segment 0x0")
     assert int(dut.segments.value) == segments[0]
@@ -50,12 +57,14 @@ async def test_7seg_cycling(dut):
     # Check that input is zero
     assert dut.is_zero == 1
 
+    # If in gate level simulator do not wait for one second, this will take a long time
+    if gate_level_sim:
+        return
+
     # Wait for zero to turn into one
-    await ClockCycles(dut.clk, cycles_per_second)
+    await ClockCycles(dut.clk, cycles_per_second - 0xFF)
 
     number_of_cycles = 3
-    if gate_level_sim:
-        number_of_cycles = 1
 
     for k in range(number_of_cycles):
         dut._log.info("check all segments for {}th time".format(k))
@@ -74,9 +83,6 @@ async def test_7seg_cycling(dut):
 
             assert int(dut.segments.value) == segments[i]
             assert dut.is_zero == 1
-
-            if gate_level_sim and i == 2:
-                break
 
             # Wait for 1 second
             await ClockCycles(dut.clk, cycles_per_second - 0xFF)
