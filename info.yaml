@@ -85,25 +85,25 @@ documentation:
 
 # A description of what the inputs do (e.g. red button, SPI CLK, SPI MOSI, etc).
   inputs:
-    - Number to factor bit 0
-    - Number to factor bit 1
-    - Number to factor bit 2
-    - Number to factor bit 3
-    - Number to factor bit 4
-    - Number to factor bit 5
-    - Number to factor bit 6
-    - Number to factor bit 7
+    - Input number bit 0
+    - Input number bit 1
+    - Input number bit 2
+    - Input number bit 3
+    - Input number bit 4
+    - Input number bit 5
+    - Input number bit 6
+    - Input number bit 7
 
 # A description of what the outputs do (e.g. status LED, SPI MISO, etc)
   outputs:
-    - segment a
-    - segment b
-    - segment c
-    - segment d
-    - segment e
-    - segment f
-    - segment g
-    - dot
+    - segment a (hex)
+    - segment b (hex)
+    - segment c (hex)
+    - segment d (hex)
+    - segment e (hex)
+    - segment f (hex)
+    - segment g (hex)
+    - dot (is prime)
 
 # A description of what the bidirectional I/O pins do (e.g. I2C SDA, I2C SCL, etc)
   bidirectional:
