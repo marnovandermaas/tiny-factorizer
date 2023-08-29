@@ -39,17 +39,19 @@ documentation:
                 (2^6 % k) * n[6] +
                 (2^7 % k) * n[7]
               ) % k
+            = big_sum % k
       ```
-      The values of `2^n % k` can be computed ahead of time and are hardcoded in the design.
-      Since the final result of the big sum is guaranteed to be less than or equal to `(k - 1) * 8`, we can exhaustively list all the values for which the modulus is one by:
+      The values of `2^x % k` can be computed ahead of time and are hardcoded in the design.
+      Also we don't actually care about the modulus but rather about when the modulus is equal to zero, because that means that `k` is a factor.
+      Since the final result of `big_sum` is guaranteed to be less than or equal to `(k - 1) * 8`, we can exhaustively list all the values for which the modulus is zero by:
       ```
-      n % k = (
-                (big_sum == k * 0) ||
-                (big_sum == k * 1) ||
-                (big_sum == k * 2) ||
-                ...                ||
-                (big_sum == k * m)
-              )
+      (n % k == 0) = (
+                       (big_sum == k * 0) ||
+                       (big_sum == k * 1) ||
+                       (big_sum == k * 2) ||
+                       ...                ||
+                       (big_sum == k * m)
+                     )
       ```
       Where `m` is the largest integer for which `k * m <= (k - 1) * 8`.
 
@@ -72,7 +74,7 @@ documentation:
       For 7, the factors 1 and 7 will be shown on the display.
       For 23, only the factor 1 will be show on the display.
       It will also use the output pins to indicate the prime factors, where the least significant bit represents 2 and the most significant bit represents 19.
-      For example for 6, 2 and 3 are set to 1.
+      For example for 6, only 2 and 3 are set to 1.
       For 7, only 7 is set to 1.
       For 23, all the outputs are zero.
       The dot on the seven segment display is only on when the input number is prime.
@@ -85,25 +87,25 @@ documentation:
 
 # A description of what the inputs do (e.g. red button, SPI CLK, SPI MOSI, etc).
   inputs:
-    - Input number bit 0
-    - Input number bit 1
-    - Input number bit 2
-    - Input number bit 3
-    - Input number bit 4
-    - Input number bit 5
-    - Input number bit 6
-    - Input number bit 7
+    - Fist bit of number to factor
+    - Second bit of number to factor
+    - Third bit of number to factor
+    - Fourth bit of number to factor
+    - Fifth bit of number to factor
+    - Sixth bit of number to factor
+    - Seventh bit of number to factor
+    - Eigth bit of number to factor
 
 # A description of what the outputs do (e.g. status LED, SPI MISO, etc)
   outputs:
-    - segment a (hex)
-    - segment b (hex)
-    - segment c (hex)
-    - segment d (hex)
-    - segment e (hex)
-    - segment f (hex)
-    - segment g (hex)
-    - dot (is prime)
+    - Segment a (hex)
+    - Segment b (hex)
+    - Segment c (hex)
+    - Segment d (hex)
+    - Segment e (hex)
+    - Segment f (hex)
+    - Segment g (hex)
+    - Segment dot (is prime)
 
 # A description of what the bidirectional I/O pins do (e.g. I2C SDA, I2C SCL, etc)
   bidirectional:
