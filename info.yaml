@@ -46,11 +46,11 @@ documentation:
       Since the final result of `big_sum` is guaranteed to be less than or equal to `(k - 1) * 8`, we can exhaustively list all the values for which the modulus is zero by:
       ```
       (n % k == 0) = (
-                       (big_sum == k * 0) ||
-                       (big_sum == k * 1) ||
-                       (big_sum == k * 2) ||
+                       big_sum == (k * 0) ||
+                       big_sum == (k * 1) ||
+                       big_sum == (k * 2) ||
                        ...                ||
-                       (big_sum == k * m)
+                       big_sum == (k * m)
                      )
       ```
       Where `m` is the largest integer for which `k * m <= (k - 1) * 8`.
